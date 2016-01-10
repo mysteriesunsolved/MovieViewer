@@ -8,20 +8,30 @@
 
 import UIKit
 import AFNetworking
+import EZLoadingActivity
 
 class MoviesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
-
+  
+    var refreshControl: UIRefreshControl!
+  
     @IBOutlet weak var tableView: UITableView!
     
-    
+    @IBOutlet var tapGesture: UITapGestureRecognizer!
+  
     var movies: [NSDictionary]?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+      
+      
+      
         tableView.dataSource = self
         tableView.delegate = self
-        
+      
+        refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: "onRefresh", forControlEvents: UIControlEvents.ValueChanged)
+        self.refreshControl.tintColor = UIColor .blueColor()
+        tableView.addSubview(refreshControl)
         
         let apiKey = "a07e22bc18f5cb106bfe4cc1f83ad8ed"
         let url = NSURL(string:"https://api.themoviedb.org/3/movie/now_playing?api_key=\(apiKey)")
@@ -61,6 +71,8 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
       if let movies = movies {
         return movies.count
       } else {
+        
+        EZLoadingActivity.hide(success: false, animated: true)
         return 0
       }
       
@@ -87,6 +99,25 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
       return cell
         
     }
+    
+    func delay(delay:Double, closure:()->()) {
+        dispatch_after(
+            dispatch_time(
+                DISPATCH_TIME_NOW,
+                Int64(delay * Double(NSEC_PER_SEC))
+            ),
+            dispatch_get_main_queue(), closure)
+    }
+    
+    func onRefresh() {
+        delay(2, closure: {
+            self.refreshControl.endRefreshing()
+        })
+    }
+    
+   
+    
+  
     /*
     // MARK: - Navigation
 
