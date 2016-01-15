@@ -10,18 +10,20 @@ import UIKit
 import AFNetworking
 
 
-class MoviesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate {
+class MoviesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UISearchBarDelegate {
   
     var refreshControl: UIRefreshControl!
   
     @IBOutlet weak var tableView: UITableView!
   
-    @IBOutlet weak var errorLabel: UILabel!
+   
+    @IBOutlet var networkerrorView: UIView!
     
     @IBOutlet weak var collectionView: UICollectionView!
    
     @IBOutlet weak var barButton: UIBarButtonItem!
     
+    @IBOutlet var movieSearch: UISearchBar!
     
     @IBOutlet weak var switchView: UISwitch!
   
@@ -32,6 +34,8 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     
     var movies: [NSDictionary]?
     
+    var filteredData: [NSDictionary]?
+    
   
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,17 +44,20 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         tableView.delegate = self
         collectionView.dataSource = self
         collectionView.delegate = self
+        movieSearch.delegate = self
+        
+        networkerrorView.hidden = true
         
         navigationController!.navigationBar.barTintColor = UIColor.blackColor()
         navigationController!.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.orangeColor()]
         
         refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: "onRefresh", forControlEvents: UIControlEvents.ValueChanged)
-        self.refreshControl.tintColor = UIColor .blueColor()
+        self.refreshControl.tintColor = UIColor .orangeColor()
         tableView.addSubview(refreshControl)
         collectionView.addSubview(refreshControl)
         
-        errorLabel.hidden = true
+     
         
         tableView.hidden = true
         
@@ -73,6 +80,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
                             print("response: \(responseDictionary)")
                             
                             self.movies = responseDictionary["results"] as! [NSDictionary]
+                            self.filteredData = self.movies
                             self.tableView.reloadData()
                             self.collectionView.reloadData()
                             
@@ -94,11 +102,10 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
       
-      if let movies = movies {
-        return movies.count
+      if let movies = filteredData {
+        return filteredData!.count
       } else {
-        
-        errorLabel.hidden = false
+       
         return 0
       }
       
@@ -109,7 +116,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell{
       let cell = tableView.dequeueReusableCellWithIdentifier("MovieCell", forIndexPath: indexPath) as! MovieCell
         
-      let movie = movies![indexPath.row]
+      let movie = filteredData![indexPath.row]
       let title = movie["title"] as! String
       let overview = movie["overview"] as! String
       let posterPath = movie["poster_path"] as! String
@@ -150,11 +157,10 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     // Collection View
    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
-        if let movies = movies {
-            return movies.count
+        if let movies = filteredData {
+            return filteredData!.count
         } else {
             
-            errorLabel.hidden = false
             return 0
         }
         
@@ -165,7 +171,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("MovieCollectionCell", forIndexPath: indexPath) as! MovieCollectionCell
         
         
-        let movie = movies![indexPath.row]
+        let movie = filteredData![indexPath.row]
         let title = movie["title"] as! String
         let posterPath = movie["poster_path"] as! String
         
@@ -201,8 +207,27 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
 
     }
    
+    func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
+        
+        filteredData = searchText.isEmpty ? movies : movies!.filter({(movie: NSDictionary) -> Bool in
+            
+            let title = movie["title"] as! String
+            
+            return title.rangeOfString(searchText, options: .CaseInsensitiveSearch) != nil
+        })
+        
+        if movieSearch.text == "" {
+
+            view.endEditing(true)
+        }
+        
+        tableView.reloadData()
+        collectionView.reloadData()
+    }
     
-    
+    func searchBarSearchButtonClicked(searchBar: UISearchBar) {
+        view.endEditing(true)
+    }
    
     
 
