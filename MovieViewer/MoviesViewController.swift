@@ -15,7 +15,6 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     var refreshControl: UIRefreshControl!
   
     @IBOutlet weak var tableView: UITableView!
-  
    
     @IBOutlet var networkerrorView: UIView!
     
@@ -119,15 +118,37 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
       let movie = filteredData![indexPath.row]
       let title = movie["title"] as! String
       let overview = movie["overview"] as! String
-      let posterPath = movie["poster_path"] as! String
       
       let baseURL = "http://image.tmdb.org/t/p/w500/"
       
-      let imageURL = NSURL(string: baseURL + posterPath)
+        
+        if let posterPath = movie["poster_path"] as? String {
+            
+            let imageURL = NSURL(string: baseURL + posterPath)
+            
+            let imageRequest = NSURLRequest(URL: imageURL!)
+            
+            cell.posterView.setImageWithURLRequest(imageRequest, placeholderImage: nil, success: { (imageRequest, imageResponse, image) -> Void in
+                if imageResponse != nil {
+                    print("image was NOT cached, fade in")
+                    cell.posterView.alpha = 0.0
+                    cell.posterView.image = image
+                    UIView.animateWithDuration(0.7, animations: { () -> Void in
+                        cell.posterView.alpha = 1.0
+                    })
+                } else {
+                    print ("image was cached")
+                    cell.posterView.image = image
+                }
+                },
+                failure: { (imageRequest, imageResponse, error) -> Void in
+            })
+        }
+
       
       cell.titleLabel.text = title
       cell.overviewLabel.text = overview
-      cell.posterView.setImageWithURL(imageURL!)
+      
         
       print("row \(indexPath.row)")
         
@@ -173,14 +194,33 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         
         let movie = filteredData![indexPath.row]
         let title = movie["title"] as! String
-        let posterPath = movie["poster_path"] as! String
         
         let baseURL = "http://image.tmdb.org/t/p/w500/"
         
-        let imageURL = NSURL(string: baseURL + posterPath)
+        if let posterPath = movie["poster_path"] as? String {
+            
+            let imageURL = NSURL(string: baseURL + posterPath)
+            
+            let imageRequest = NSURLRequest(URL: imageURL!)
+            
+            cell.postercollectionView.setImageWithURLRequest(imageRequest, placeholderImage: nil, success: { (imageRequest, imageResponse, image) -> Void in
+                if imageResponse != nil {
+                    print("image was NOT cached, fade in")
+                    cell.postercollectionView.alpha = 0.0
+                    cell.postercollectionView.image = image
+                    UIView.animateWithDuration(0.7, animations: { () -> Void in
+                        cell.postercollectionView.alpha = 1.0
+                    })
+                } else {
+                    print ("image was cached")
+                    cell.postercollectionView.image = image
+                }
+                },
+                failure: { (imageRequest, imageResponse, error) -> Void in
+            })
+        }
         
         cell.titlecollectionLabel.text = title
-        cell.postercollectionView.setImageWithURL(imageURL!)
         
         
         print("row \(indexPath.row)")
@@ -206,30 +246,64 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         
 
     }
+    
+    //Search Bar
    
     func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
         
         filteredData = searchText.isEmpty ? movies : movies!.filter({(movie: NSDictionary) -> Bool in
             
             let title = movie["title"] as! String
+            let overview = movie["overview"] as! String
             
-            return title.rangeOfString(searchText, options: .CaseInsensitiveSearch) != nil
+            return title.rangeOfString(searchText, options: .CaseInsensitiveSearch) != nil || overview.rangeOfString(searchText, options: .CaseInsensitiveSearch) != nil
         })
         
-        if movieSearch.text == "" {
-
-            view.endEditing(true)
-        }
         
         tableView.reloadData()
         collectionView.reloadData()
     }
     
+    
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {
         view.endEditing(true)
     }
-   
     
+    
+    func searchBarCancelButtonClicked(searchBar: UISearchBar) {
+        view.endEditing(true)
+        filteredData = movies
+        searchBar.text = nil
+        tableView.reloadData()
+        collectionView.reloadData()
+        
+    }
+    
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        
+        if tableView.hidden == false {
+        
+        let cell = sender as! UITableViewCell
+        let indexPath = tableView.indexPathForCell(cell)
+        let movie = movies![indexPath!.row]
+        
+        let detailViewController = segue.destinationViewController as! DetailMoviesViewController
+        detailViewController.movie = movie
+        } else {
+            let cell = sender as! UICollectionViewCell
+            let indexPath = collectionView.indexPathForCell(cell)
+            let movie = movies![indexPath!.row]
+            
+            let detailViewController = segue.destinationViewController as! DetailMoviesViewController
+            detailViewController.movie = movie
+            
+        }
+        
+        
+    }
+    
+  
 
 }
     
