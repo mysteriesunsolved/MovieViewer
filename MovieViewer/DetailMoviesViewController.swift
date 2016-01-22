@@ -16,7 +16,9 @@ class DetailMoviesViewController: UIViewController {
     
     @IBOutlet var overviewLabel: UILabel!
     
+    @IBOutlet var languageLabel: UILabel!
  
+    
     
  
     
@@ -44,7 +46,12 @@ class DetailMoviesViewController: UIViewController {
             posterImageView.setImageWithURL(imageURL!)
             
         }
-
+        
+        let language = movie["original_language"] as! String
+        languageLabel.text = "Language: \(language.uppercaseString)"
+        
+      
+        
         // Do any additional setup after loading the view.
     }
 
