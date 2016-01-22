@@ -27,6 +27,7 @@ The following **additional** features are implemented:
 - [x] List anything else that you can get done to improve the app functionality!
 - I added a UISwitch through which the user can switch between the tableView and collectionView
 - User can also search through an overview
+- User can view the language of the film in the detail movie controller
 
 ## Video Walkthrough 
 
