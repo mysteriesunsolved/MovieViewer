@@ -19,13 +19,14 @@ The following **optional** features are implemented:
 - [ ] User sees an error message when there's a networking error.
 - [x] Movies are displayed using a CollectionView instead of a TableView.
 - [x] User can search for a movie.
-- [ ] All images fade in as they are loading.
+- [x] All images fade in as they are loading.
 - [x] Customize the UI.
 
 The following **additional** features are implemented:
 
 - [x] List anything else that you can get done to improve the app functionality!
 - I added a UISwitch through which the user can switch between the tableView and collectionView
+- User can also search through an overview
 
 ## Video Walkthrough 
 
