@@ -3,7 +3,7 @@
 
 **MovieViewer** is a movies app using the [The Movie Database API](http://docs.themoviedb.apiary.io/#).
 
-Time spent: **8** hours spent in total
+Time spent: **15** hours spent in total
 
 ## User Stories
 
@@ -39,7 +39,8 @@ GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
 ## Notes
 
-I couldn't figure out how to use the search bar with an NSDictionary and it took a bit of trial and error getting the collection view right.
+I took time to figure out how to use the search bar with an NSDictionary.
+I couldn't figure out how to implement the network error view. 
 
 
 ## License
