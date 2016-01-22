@@ -3,7 +3,7 @@
 
 **MovieViewer** is a movies app using the [The Movie Database API](http://docs.themoviedb.apiary.io/#).
 
-Time spent: **8** hours spent in total
+Time spent: **15** hours spent in total
 
 ## User Stories
 
@@ -26,19 +26,21 @@ The following **additional** features are implemented:
 
 - [x] List anything else that you can get done to improve the app functionality!
 - I added a UISwitch through which the user can switch between the tableView and collectionView
-- User can also search through an overview
+- The user can also search using words from an overview
+- The user can view the language of the film in the detail movie controller (since I noticed some weren't english)
 
 ## Video Walkthrough 
 
 Here's a walkthrough of implemented user stories:
 
-<img src='http://i.imgur.com/ccwLqax.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<img src='http://i.imgur.com/BmVzspk.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
 ## Notes
 
-I couldn't figure out how to use the search bar with an NSDictionary and it took a bit of trial and error getting the collection view right.
+I took time to figure out how to use the search bar with an NSDictionary.
+I couldn't figure out how to implement the network error view. 
 
 
 ## License
