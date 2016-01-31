@@ -18,16 +18,20 @@ class DetailMoviesViewController: UIViewController {
     
     @IBOutlet var languageLabel: UILabel!
  
+    @IBOutlet var scrollView: UIScrollView!
     
-    
- 
+    @IBOutlet var infoView: UIView!
     
     var movie: NSDictionary!
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-       
+        self.view.backgroundColor = UIColor .blackColor()
+        
+       scrollView.contentSize = CGSize(width: scrollView.frame.size.width, height: infoView.frame.origin.y + infoView.frame.size.height)
         
         print(movie)
         
@@ -50,6 +54,7 @@ class DetailMoviesViewController: UIViewController {
         let language = movie["original_language"] as! String
         languageLabel.text = "Language: \(language.uppercaseString)"
         
+     
       
         
         // Do any additional setup after loading the view.
