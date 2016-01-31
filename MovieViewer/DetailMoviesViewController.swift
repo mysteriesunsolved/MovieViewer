@@ -43,11 +43,49 @@ class DetailMoviesViewController: UIViewController {
         
         overviewLabel.sizeToFit()
         
-        let baseURL = "http://image.tmdb.org/t/p/w500/"
+        let baseURL = "http://image.tmdb.org/t/p/"
         
         if let posterPath = movie["poster_path"] as? String {
-            let imageURL = NSURL(string: baseURL + posterPath)
-            posterImageView.setImageWithURL(imageURL!)
+            
+            let smallImageURL = NSURL(string: baseURL + "w45" + posterPath)
+            let largeImageURL = NSURL(string: baseURL + "original" + posterPath)
+            
+            let smallImageRequest = NSURLRequest(URL: (smallImageURL)!)
+            let largeImageRequest = NSURLRequest(URL: (largeImageURL)!)
+            
+           self.posterImageView.setImageWithURLRequest(
+            smallImageRequest,
+            placeholderImage: nil,
+            success: { (smallImageRequest, smallImageResponse, smallImage) -> Void in
+                
+                self.posterImageView.alpha = 0.0
+                self.posterImageView.image = smallImage;
+                
+                UIView.animateWithDuration(0.3, animations: { () -> Void in
+                    
+                    self.posterImageView.alpha = 1.0
+                    
+                    }, completion: { (sucess) -> Void in
+                        
+                        self.posterImageView.setImageWithURLRequest(
+                            largeImageRequest,
+                            placeholderImage: nil,
+                            success: { (largeImageRequest, largeImageResponse, largeImage) -> Void in
+                                
+                                self.posterImageView.image = largeImage;
+                                
+                            },
+                            
+                                failure: { (request, response, error) -> Void in
+                                    
+                                    print("error")
+                        })
+                    })
+            },
+            
+            failure: { (request, response, error) -> Void in
+                print("error 2")
+           })
             
         }
         
@@ -55,8 +93,6 @@ class DetailMoviesViewController: UIViewController {
         languageLabel.text = "Language: \(language.uppercaseString)"
         
      
-      
-        
         // Do any additional setup after loading the view.
     }
 

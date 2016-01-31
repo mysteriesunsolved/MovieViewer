@@ -30,7 +30,6 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     
     var hidden = Bool()
     
-    
     var movies: [NSDictionary]?
     
     var filteredData: [NSDictionary]?
@@ -98,6 +97,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         // Dispose of any resources that can be recreated.
     }
     
+   
     //Table View 
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -150,12 +150,20 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
       cell.titleLabel.text = title
       cell.overviewLabel.text = overview
       
+      let backgroundView = UIView()
+      backgroundView.backgroundColor = UIColor.orangeColor()
+      cell.selectedBackgroundView = backgroundView
+        
         
       print("row \(indexPath.row)")
         
       return cell
         
     }
+    
+  
+    
+   
     
     //Refresh Commands
     
@@ -192,7 +200,6 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("MovieCollectionCell", forIndexPath: indexPath) as! MovieCollectionCell
         
-        
         let movie = filteredData![indexPath.row]
         let title = movie["title"] as! String
         
@@ -223,13 +230,23 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         
         cell.titlecollectionLabel.text = title
         
+        let backgroundView = UIView()
+        backgroundView.backgroundColor = UIColor.orangeColor()
+        cell.selectedBackgroundView = backgroundView
+        
         
         print("row \(indexPath.row)")
         
+        
+        
+    
         return cell
         
         
         }
+    
+    
+   
     
     //Button Switch
     
@@ -304,6 +321,9 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         
     }
     
+
+    
+
   
 
 }
