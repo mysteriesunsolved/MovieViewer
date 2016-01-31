@@ -64,7 +64,7 @@ The following **required** functionality is completed:
 
 - [x] User can view movie details by tapping on a cell.
 - [x] User can select from a tab bar for either **Now Playing** or **Top Rated** movies.
-- [x] Customize the selection effect of the cell. (I didn't want to customise the selection effect so I set it to none)
+- [x] Customize the selection effect of the cell. (I didn't want to customise the selection effect since there'd be too much colour on the screen, so I set the cell selection style to none)
 
 The following **optional** features are implemented:
 
@@ -78,6 +78,7 @@ The following **additional** features are implemented:
 - Ratings for each movie are shown with icons and vote average.
 - The icons change depending on the rating of the movie. If the rating is greater than 7, it displays a fire icon, if greater than 5, it displays a thumbs up icon, and if lesser than 5 it displays a thumbs down icon.
 - If a movie's vote count = 0, making the average rating 0 be default, "No ratings to show" is displayed in the rating section.
+- Added a network error view I didn't finish last week.
 
 Please list two areas of the assignment you'd like to **discuss further with your peers** during the next class (examples include better ways to implement something, how to extend your app in certain ways, etc):
 
