@@ -119,7 +119,10 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
       let movie = filteredData![indexPath.row]
       let title = movie["title"] as! String
       let overview = movie["overview"] as! String
-      
+      let rating = movie["vote_average"] as! Double
+      let releasedate = movie["release_date"] as! String
+      let votecount = movie["vote_count"] as! Double
+        
       let baseURL = "http://image.tmdb.org/t/p/w500/"
       
         
@@ -145,14 +148,37 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
                 failure: { (imageRequest, imageResponse, error) -> Void in
             })
         }
+        
+      
 
       
       cell.titleLabel.text = title
       cell.overviewLabel.text = overview
+      cell.dateLabel.text = releasedate
+        
+        
+      cell.ratingLabel.text = String(format: "= %.2f", rating)
       
-      let backgroundView = UIView()
-      backgroundView.backgroundColor = UIColor.orangeColor()
-      cell.selectedBackgroundView = backgroundView
+        if rating > 7.2 {
+            cell.ratingiconImage.image = UIImage(named: "HotRating")!.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
+            cell.ratingiconImage.tintColor = UIColor (red: 251/255, green: 42/255, blue: 8/255, alpha: 1)
+
+            
+        } else if rating > 5 {
+            cell.ratingiconImage.image = UIImage(named: "AverageRating")!.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
+            cell.ratingiconImage.tintColor = UIColor (red: 254/255, green: 178/255, blue: 166/255, alpha: 1)
+
+        } else {
+            cell.ratingiconImage.image = UIImage(named: "BadRating")!.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
+            cell.ratingiconImage.tintColor = UIColor (red: 254/255, green: 178/255, blue: 166/255, alpha: 1)
+        }
+        
+        
+        if votecount == 0 {
+            cell.ratingLabel.text = "No Ratings Yet"
+        }
+        
+      cell.selectionStyle = .None
         
         
       print("row \(indexPath.row)")
@@ -202,6 +228,9 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         
         let movie = filteredData![indexPath.row]
         let title = movie["title"] as! String
+        let rating = movie["vote_average"] as! Double
+        let releasedate = movie["release_date"] as! String
+        let votecount = movie["vote_count"] as! Double
         
         let baseURL = "http://image.tmdb.org/t/p/w500/"
         
@@ -230,9 +259,29 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         
         cell.titlecollectionLabel.text = title
         
-        let backgroundView = UIView()
-        backgroundView.backgroundColor = UIColor.orangeColor()
-        cell.selectedBackgroundView = backgroundView
+        cell.datecollectionLabel.text = releasedate
+        
+        cell.ratingcollectionLabel.text = String(format: "= %.2f", rating)
+        
+        if rating > 7.2 {
+            cell.ratingcollectionImage.image = UIImage(named: "HotRating")!.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
+            cell.ratingcollectionImage.tintColor = UIColor (red: 251/255, green: 42/255, blue: 8/255, alpha: 1)
+            
+            
+        } else if rating > 5 {
+            cell.ratingcollectionImage.image = UIImage(named: "AverageRating")!.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
+            cell.ratingcollectionImage.tintColor = UIColor (red: 254/255, green: 178/255, blue: 166/255, alpha: 1)
+            
+        } else {
+            cell.ratingcollectionImage.image = UIImage(named: "BadRating")!.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
+            cell.ratingcollectionImage.tintColor = UIColor (red: 254/255, green: 178/255, blue: 166/255, alpha: 1)
+        }
+        
+        if votecount == 0 {
+            cell.ratingcollectionLabel.text = "No ratings yet"
+        }
+        
+        
         
         
         print("row \(indexPath.row)")

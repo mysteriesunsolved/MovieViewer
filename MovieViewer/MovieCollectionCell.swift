@@ -14,4 +14,11 @@ class MovieCollectionCell: UICollectionViewCell {
     
     @IBOutlet weak var titlecollectionLabel: UILabel!
     
+    @IBOutlet var ratingcollectionImage: UIImageView!
+    
+    @IBOutlet var ratingcollectionLabel: UILabel!
+    
+    @IBOutlet var datecollectionLabel: UILabel!
+    
+    
 }
