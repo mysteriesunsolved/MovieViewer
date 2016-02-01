@@ -83,7 +83,12 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
                             self.tableView.reloadData()
                             self.collectionView.reloadData()
                             
+                            self.networkerrorView.hidden = true
                             
+                            
+                    } else {
+                        print("network error")
+                        self.networkerrorView.hidden = false
                     }
                 }
         });
